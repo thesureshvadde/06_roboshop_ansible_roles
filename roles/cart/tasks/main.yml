@@ -1,0 +1,14 @@
+  - name: create robouser, mkdir app, unzip catalogue file
+    ansible.builtin.import_role:
+      name: common #To call common role. The common has tasks inside that we have repeadted tasks
+      tasks_from: app_tasks #Name of a file in common role that contains list of tasks to create user, mkdir app etc
+
+  - name: Install nodejs 
+    ansible.builtin.import_role:
+      name: common #To call common role. The common has tasks inside that we have nodejs
+      tasks_from: nodejs #Name of a file in common role
+
+  - name: Start and enable the services 
+    ansible.builtin.import_role:
+      name: common #To call common role. The common has tasks inside that we have systemd file
+      tasks_from: systemd #Name of a file in common role
