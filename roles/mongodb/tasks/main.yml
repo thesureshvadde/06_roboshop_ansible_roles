@@ -1,0 +1,28 @@
+ #In tasks-main.yml file just we need to give the taks information. No need to give host information.
+  - name: Copy the mongodb.repo file
+    ansible.builtin.copy:  #Search ansible copy module in google to find the modules
+      src: mongodb.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: Install MongoDB
+    ansible.builtin.package: #Ansible package module
+      name: mongodb-org 
+      state: present
+
+  - name: Start & Enable MongoDB Service
+    ansible.builtin.service:  #Ansible service module 
+      name: mongod
+      state: started #To start the mongod
+      enabled: yes #To enable the mongod
+
+  - name: allow remote connection
+    ansible.builtin.replace: #Ansible replace module
+      path: /etc/mongod.conf
+      regexp: '127.0.0.1' 
+      replace: '0.0.0.0'
+
+  - name: Start & Enable MongoDB Service
+    ansible.builtin.service: 
+      name: mongod
+      state: restarted 
+
