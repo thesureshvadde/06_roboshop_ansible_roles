@@ -1,0 +1,14 @@
+  - name: create robouser, mkdir app, unzip catalogue file
+    ansible.builtin.import_role:
+      name: common 
+      tasks_from: app_tasks 
+
+  - name: Install Python 
+    ansible.builtin.import_role:
+      name: common 
+      tasks_from: python
+
+  - name: Start and enable the services 
+    ansible.builtin.import_role:
+      name: common 
+      tasks_from: systemd 
