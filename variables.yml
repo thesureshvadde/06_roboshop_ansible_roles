@@ -1,0 +1,22 @@
+MONGODB_HOST: mongodb.sureshvadde.online
+
+CATALOGUE_HOST: catalogue.sureshvadde.online
+
+WEB_HOST: sureshvadde.online
+
+REDIS_HOST: redis.sureshvadde.online
+
+USER_HOST: user.sureshvadde.online
+
+CART_HOST: cart.sureshvadde.online
+
+RABBITMQ_HOST: rabbitmq.sureshvadde.online
+
+MYSQL_HOST: mysql.sureshvadde.online
+
+PAYMENT_HOST: payment.sureshvadde.online
+
+SHIPPING_HOST: shipping.sureshvadde.online
+
+DISPATCH: dispatch.sureshvadde.online
+
