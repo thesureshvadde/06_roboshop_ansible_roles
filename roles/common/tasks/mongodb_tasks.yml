@@ -1,0 +1,31 @@
+- name: Copy the mongodb.repo file
+  ansible.builtin.copy:  #Search ansible copy module in google to find the modules
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongo.repo 
+
+- name: Install MongoDB Client
+  ansible.builtin.package: #Ansible package module
+    name: mongodb-org-shell 
+    state: present
+
+- name: Get the catalogue products count #if the count is 0 i.e, no data in catalogue server
+  ansible.builtin.command: mongo --host {{MONGODB_HOST}} --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+  register: products_count
+  when: host_name == "catalogue" #while running the catalogue server this task will execute
+
+- name: get the user entries count
+  ansible.builtin.shell:  mongo --host {{MONGODB_HOST}} --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
+  register: entries_count
+  when: host_name == "user" #while running the user server this task will execute
+
+- name: load catalogue data
+  ansible.builtin.shell: "mongo --host {{MONGODB_HOST}} < /app/schema/{{host_name}}.js"
+  when: host_name == "catalogue" and products_count.stdout == "0"  # keep double quotes
+  #ignore_errors: true
+
+- name: load user data
+  ansible.builtin.shell: "mongo --host {{MONGODB_HOST}} < /app/schema/{{host_name}}.js"
+  when: host_name == "user" and entries_count.stdout == "0"  # keep double quotes
+  #ignore_errors: true
+
+#cntl+A then Shift+tab to fix the format

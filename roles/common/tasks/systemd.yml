@@ -1,0 +1,19 @@
+# - name: "Copy the {{host_name}} file"
+#   ansible.builtin.copy:  #Search "ansible copy module" in google to find the modules
+#     src: "{{host_name}}.service"
+#     dest: "/etc/systemd/system/{{host_name}}.service"
+
+- name: "Copy the {{host_name}} file"
+  ansible.builtin.template:  #ansible template module simlar to "ansible copy module" 
+    src: "{{host_name}}.service.j2"
+    dest: "/etc/systemd/system/{{host_name}}.service"
+
+- name: Daemon reload
+  ansible.builtin.systemd_service:  #Ansible systectl module
+    daemon_reload: true
+
+- name: "Start & Enable {{host_name}} Service"
+  ansible.builtin.service: 
+    name: "{{host_name}}"
+    state: started
+    enabled: yes 

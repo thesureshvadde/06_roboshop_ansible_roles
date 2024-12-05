@@ -1,0 +1,28 @@
+#Common taks are kept in common role to call when erver required.
+
+
+
+- name: Creat roboshop user
+  ansible.builtin.user: #Ansible user module
+    name: roboshop
+
+- name: Remove app directory
+  ansible.builtin.file: #Ansible file module
+    path: /app
+    state: absent
+
+- name: Creat app directory
+  ansible.builtin.file: #Ansible file module
+    path: /app
+    state: directory
+
+- name: Download the application code to created app directory.
+  ansible.builtin.get_url: #Ansible get url module
+    url: "https://roboshop-builds.s3.amazonaws.com/{{host_name}}.zip"
+    dest: /tmp
+  
+- name: Unzip
+  ansible.builtin.unarchive: #Ansible unzip module
+    src: "/tmp/{{host_name}}.zip"
+    dest: /app
+    remote_src: yes
